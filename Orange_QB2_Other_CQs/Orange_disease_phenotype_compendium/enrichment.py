@@ -11,62 +11,43 @@ from ontobio.assoc_factory import AssociationSetFactory
 
 HUMAN = 'NCBITaxon:9606'
 
+#ontology paths
+##''/Users/marcin/Documents/VIMSS/ontology/NCATS/HPO/hp.obo')#mondo#hp
+
 ofactory = OntologyFactory()
 afactory = AssociationSetFactory()
-ont = ofactory.create('mondo')#mondo#hp
+print("creating...")
+ont = ofactory.create('hp')
+#ont = ofactory.create('mondo')
 aset = afactory.create(ontology=ont,
                        subject_category='disease',
                        object_category='phenotype',
                        taxon=HUMAN)
-                 
-print(ont.equiv_graph())
-      
-#with open('mondo.pkl', 'wb') as f:
-#	pickle.dump(ofactory, f, pickle.HIGHEST_PROTOCOL)
-#	pickle.dump(afactory, f, pickle.HIGHEST_PROTOCOL)
-#	pickle.dump(ont, f, pickle.HIGHEST_PROTOCOL)
-#	pickle.dump(aset, f, pickle.HIGHEST_PROTOCOL)
 
-
-#with open('mondo.pkl', 'rb') as f:
-#	ofactory = pickle.load(f)
-#	afactory = pickle.load(f)
-#	ont = pickle.load(f)
-#	aset = pickle.load(f)
-
-#print(locals())		
-
-#print(data)
-
-#sys.exit()
-           
-           
-          
-#equiv_graph     
-#loop over associations until get MONDO term
+###aset = afactory.create_from_gaf('my.gaf', ontology=ont)
 
                 
-disease_ids = {"DECIPHER:1", "DECIPHER:16", "OMIM:614696", "OMIM:614699", "Orphanet:99978"}
+disease_ids = ["DECIPHER:1", "DECIPHER:16", "OMIM:614696", "OMIM:614699", "Orphanet:99978"]
+phenotype_ids = ["HP:0000007", "Orphanet:93299", "Orphanet:90794"]
+print("annotations\t"+phenotype_ids[1])
 
-print("annotations")
-print(aset.annotations("DECIPHER:1"))
-print(ont.equiv_graph())
-print(ont.equiv_graph("DECIPHER:1"))
+print(aset.annotations(phenotype_ids[1]))
+#print(ont.equiv_graph())
 
 
 
-sys.exit()
+#sys.exit()
                 
 all_disease_ids = disease_ids
 
 #print(disease_ids)
 
-enr = aset.enrichment_test(subjects=disease_ids, background=all_disease_ids, threshold=0.0000001, labels=True)
+enr = aset.enrichment_test(subjects=disease_ids, background=all_disease_ids, threshold=1, labels=True)
 
-#print(enr)
+print(enr)
 
 
-###aset = afactory.create_from_gaf('my.gaf', ontology=ont)
+
 
 
 bg_file = open("disease__by__HPO_matrix_v3_yids.txt", "r")
